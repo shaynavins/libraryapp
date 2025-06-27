@@ -1,12 +1,14 @@
 import React from 'react';
-import { SafeAreaView, StyleSheet, Text } from 'react-native';
+import { SafeAreaView, ScrollView, StyleSheet, Text } from 'react-native';
 import InteractiveSeatMap from '../../components/InteractiveSeatMap';
 
 export default function HomeScreen() {
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.heading}>Library Seat Map</Text>
-      <InteractiveSeatMap />
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        <Text style={styles.heading}>Library Seat Map</Text>
+        <InteractiveSeatMap />
+      </ScrollView>
     </SafeAreaView>
   );
 }
