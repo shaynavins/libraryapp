@@ -3,6 +3,7 @@ import { useRouter } from 'expo-router';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import React, { useState } from 'react';
 import { KeyboardAvoidingView, Platform, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import Footer from '../../components/Footer';
 import { auth } from "../../firebaseConfig";
 
 export default function login({navigation}: any) {
@@ -21,7 +22,7 @@ export default function login({navigation}: any) {
         }
         try{
             await signInWithEmailAndPassword(auth, email, password);
-            router.replace('/(tabs)/seats');
+            router.replace('./seats');
         } catch (err: any) {
             setError(err.message);
         } finally {
@@ -31,44 +32,56 @@ export default function login({navigation}: any) {
 
     return (
       <LinearGradient colors={["#e0e7ff", "#f3f6fa", "#f9fafb"]} style={{ flex: 1 }}>
-        <KeyboardAvoidingView
-          style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
-          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-        >
-          <View style={styles.card}>
-            <Text style={styles.heading}>Welcome Back</Text>
-            <Text style={styles.subheading}>Login to your account</Text>
-            <TextInput
-              placeholder="Email"
-              value={email}
-              onChangeText={setEmail}
-              style={styles.input}
-              autoCapitalize="none"
-              keyboardType="email-address"
-              placeholderTextColor="#a1a1aa"
-            />
-            <TextInput
-              placeholder="Password"
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry
-              style={styles.input}
-              placeholderTextColor="#a1a1aa"
-            />
-            {error ? <Text style={styles.error}>{error}</Text> : null}
-            <Pressable style={styles.button} onPress={log} disabled={loading}>
-              <Text style={styles.buttonText}>{loading ? 'Logging in...' : 'Login'}</Text>
-            </Pressable>
-            <Pressable style={styles.linkBtn} onPress={() => router.push('/signup')}>
-              <Text style={styles.linkText}>Don't have an account? <Text style={{ color: '#14b8a6', fontWeight: 'bold' }}>Sign Up</Text></Text>
-            </Pressable>
-          </View>
-        </KeyboardAvoidingView>
+        <View style={styles.container}>
+          <KeyboardAvoidingView
+            style={styles.keyboardView}
+            behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+          >
+            <View style={styles.card}>
+              <Text style={styles.heading}>Welcome Back</Text>
+              <Text style={styles.subheading}>Login to your account</Text>
+              <TextInput
+                placeholder="Email"
+                value={email}
+                onChangeText={setEmail}
+                style={styles.input}
+                autoCapitalize="none"
+                keyboardType="email-address"
+                placeholderTextColor="#a1a1aa"
+              />
+              <TextInput
+                placeholder="Password"
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry
+                style={styles.input}
+                placeholderTextColor="#a1a1aa"
+              />
+              {error ? <Text style={styles.error}>{error}</Text> : null}
+              <Pressable style={styles.button} onPress={log} disabled={loading}>
+                <Text style={styles.buttonText}>{loading ? 'Logging in...' : 'Login'}</Text>
+              </Pressable>
+              <Pressable style={styles.linkBtn} onPress={() => router.push('./signup')}>
+                <Text style={styles.linkText}>Don't have an account? <Text style={{ color: '#14b8a6', fontWeight: 'bold' }}>Sign Up</Text></Text>
+              </Pressable>
+            </View>
+          </KeyboardAvoidingView>
+          <Footer showFullCredits={false} />
+        </View>
       </LinearGradient>
     );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'space-between',
+  },
+  keyboardView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   card: {
     backgroundColor: '#fff',
     borderRadius: 24,

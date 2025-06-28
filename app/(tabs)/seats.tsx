@@ -1,5 +1,6 @@
 import React from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, Text } from 'react-native';
+import Footer from '../../components/Footer';
 import InteractiveSeatMap from '../../components/InteractiveSeatMap';
 
 export default function HomeScreen() {
@@ -8,6 +9,7 @@ export default function HomeScreen() {
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <Text style={styles.heading}>Library Seat Map</Text>
         <InteractiveSeatMap />
+        <Footer />
       </ScrollView>
     </SafeAreaView>
   );
