@@ -1,9 +1,8 @@
 // netlify/functions/get-firebase-token.js
 const admin = require('firebase-admin');
 
-let app;
 if (!admin.apps.length) {
-  app = admin.initializeApp({
+  admin.initializeApp({
     credential: admin.credential.cert({
       type: process.env.FIREBASE_TYPE,
       project_id: process.env.FIREBASE_PROJECT_ID,
