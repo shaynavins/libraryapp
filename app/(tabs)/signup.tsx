@@ -1,10 +1,16 @@
-import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from "expo-router";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from 'react';
 import { KeyboardAvoidingView, Platform, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import Footer from '../../components/Footer';
 import { auth } from '../../firebaseConfig';
+
+const BG_COLOR = '#f8f5ee';
+const CARD_COLOR = '#fff';
+const BORDER_COLOR = '#e5e5e5';
+const TEXT_COLOR = '#18181b';
+const BUTTON_COLOR = '#18181b';
+const SUBTEXT_COLOR = '#6b7280';
 
 export default function signup() {
     const router = useRouter();
@@ -31,7 +37,7 @@ export default function signup() {
     };
 
     return (
-      <LinearGradient colors={["#e0e7ff", "#f3f6fa", "#f9fafb"]} style={{ flex: 1 }}>
+      <View style={{ flex: 1, backgroundColor: BG_COLOR }}>
         <View style={styles.container}>
           <KeyboardAvoidingView
             style={styles.keyboardView}
@@ -47,7 +53,7 @@ export default function signup() {
                 style={styles.input}
                 autoCapitalize="none"
                 keyboardType="email-address"
-                placeholderTextColor="#a1a1aa"
+                placeholderTextColor={SUBTEXT_COLOR}
               />
               <TextInput
                 placeholder="Password"
@@ -55,20 +61,20 @@ export default function signup() {
                 onChangeText={setPassword}
                 secureTextEntry
                 style={styles.input}
-                placeholderTextColor="#a1a1aa"
+                placeholderTextColor={SUBTEXT_COLOR}
               />
               {error ? <Text style={styles.error}>{error}</Text> : null}
               <Pressable style={styles.button} onPress={signup} disabled={loading}>
                 <Text style={styles.buttonText}>{loading ? 'Signing up...' : 'Sign Up'}</Text>
               </Pressable>
-              <Pressable style={styles.linkBtn} onPress={() => router.replace('./index') }>
-                <Text style={styles.linkText}>Already have an account? <Text style={{ color: '#14b8a6', fontWeight: 'bold' }}>Login</Text></Text>
+              <Pressable style={styles.linkBtn} onPress={() => router.replace('./') }>
+                <Text style={styles.linkText}>Already have an account? <Text style={{ color: BUTTON_COLOR, fontWeight: 'bold' }}>Login</Text></Text>
               </Pressable>
             </View>
           </KeyboardAvoidingView>
           <Footer showFullCredits={false} />
         </View>
-      </LinearGradient>
+      </View>
     );
 }
 
@@ -83,42 +89,41 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   card: {
-    backgroundColor: '#fff',
+    backgroundColor: CARD_COLOR,
     borderRadius: 24,
     padding: 32,
     width: 350,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.18,
-    shadowRadius: 16,
-    elevation: 8,
+    shadowColor: 'transparent',
+    elevation: 0,
     alignItems: 'center',
+    borderWidth: 1.5,
+    borderColor: BORDER_COLOR,
   },
   heading: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: '#14b8a6',
+    color: TEXT_COLOR,
     marginBottom: 6,
     letterSpacing: 0.5,
   },
   subheading: {
     fontSize: 16,
-    color: '#555',
+    color: SUBTEXT_COLOR,
     marginBottom: 24,
   },
   input: {
     width: '100%',
     borderWidth: 1.5,
-    borderColor: '#e0e7ef',
+    borderColor: BORDER_COLOR,
     borderRadius: 12,
     padding: 14,
     marginBottom: 18,
     fontSize: 16,
-    backgroundColor: '#f3f6fa',
-    color: '#222',
+    backgroundColor: CARD_COLOR,
+    color: TEXT_COLOR,
   },
   button: {
-    backgroundColor: '#14b8a6',
+    backgroundColor: BUTTON_COLOR,
     borderRadius: 12,
     paddingVertical: 14,
     paddingHorizontal: 32,
@@ -126,11 +131,8 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     width: '100%',
     alignItems: 'center',
-    shadowColor: '#0e9488',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.12,
-    shadowRadius: 6,
-    elevation: 4,
+    shadowColor: 'transparent',
+    elevation: 0,
   },
   buttonText: {
     color: '#fff',
@@ -139,7 +141,7 @@ const styles = StyleSheet.create({
     letterSpacing: 0.2,
   },
   error: {
-    color: '#fb7185',
+    color: '#f43f5e',
     textAlign: 'center',
     marginBottom: 8,
     fontWeight: '600',
@@ -148,7 +150,7 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   linkText: {
-    color: '#555',
+    color: SUBTEXT_COLOR,
     fontSize: 15,
     textAlign: 'center',
   },

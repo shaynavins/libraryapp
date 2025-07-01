@@ -22,21 +22,21 @@ export default function Footer({ showFullCredits = true }: FooterProps) {
 
 const styles = StyleSheet.create({
   footer: {
-    backgroundColor: '#f8fafc',
+    backgroundColor: '#f6f6f6',
     paddingVertical: 16,
     paddingHorizontal: 20,
     borderTopWidth: 1,
-    borderTopColor: '#e2e8f0',
+    borderTopColor: '#e5e7eb',
     alignItems: 'center',
   },
   footerText: {
     fontSize: 14,
-    color: '#64748b',
+    color: '#18181b',
     textAlign: 'center',
     lineHeight: 20,
   },
   highlight: {
-    color: '#14b8a6',
+    color: '#18181b',
     fontWeight: '600',
   },
 }); 

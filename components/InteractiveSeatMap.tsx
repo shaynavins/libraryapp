@@ -1,4 +1,3 @@
-import { LinearGradient } from 'expo-linear-gradient';
 import { onAuthStateChanged, User } from 'firebase/auth';
 import { collection, doc, getDocs, setDoc, updateDoc } from 'firebase/firestore';
 import React, { useEffect, useRef, useState } from 'react';
@@ -8,6 +7,14 @@ import seatData from '../assets/seat-data.json';
 import { auth, db } from '../firebaseConfig';
 
 const window = Dimensions.get('window');
+const BG_COLOR = '#f8f5ee'; // very light beige
+const CARD_COLOR = '#fff'; // white
+const SVG_BG_COLOR = '#fff'; // white
+const BORDER_COLOR = '#e5e5e5'; // light grey
+const TEXT_COLOR = '#18181b'; // black
+const SEAT_AVAILABLE = '#bbf7d0'; // soft green
+const SEAT_BOOKED = '#fecaca'; // soft red
+const SEAT_YOUR = '#ddd6fe'; // soft purple
 
 type Seat = {
   id: string;
@@ -120,28 +127,25 @@ export default function InteractiveSeatMap() {
   };
 
   return (
-    <LinearGradient
-      colors={["#e0e7ff", "#f3f6fa", "#f9fafb"]}
-      style={styles.gradientBg}
-    >
+    <View style={styles.gradientBg}>
       <View style={styles.outerContainer}>
         {/* Legend */}
         <View style={styles.legendContainer}>
           <View style={styles.legendItem}>
-            <View style={[styles.legendPill, { backgroundColor: '#e6fbe6' }]}> 
-              <View style={[styles.legendCircle, { backgroundColor: '#00FF00', borderColor: '#000' }]} />
+            <View style={[styles.legendPill]}> 
+              <View style={[styles.legendCircle, { backgroundColor: SEAT_AVAILABLE, borderColor: '#18181b' }]} />
               <Text style={styles.legendText}>Available</Text>
             </View>
           </View>
           <View style={styles.legendItem}>
-            <View style={[styles.legendPill, { backgroundColor: '#ffeaea' }]}> 
-              <View style={[styles.legendCircle, { backgroundColor: '#FF0000', borderColor: '#000' }]} />
-              <Text style={styles.legendText}>Occupied</Text>
+            <View style={[styles.legendPill]}> 
+              <View style={[styles.legendCircle, { backgroundColor: SEAT_BOOKED, borderColor: '#18181b' }]} />
+              <Text style={styles.legendText}>Booked</Text>
             </View>
           </View>
           <View style={styles.legendItem}>
-            <View style={[styles.legendPill, { backgroundColor: '#e6f0ff' }]}> 
-              <View style={[styles.legendCircle, { backgroundColor: '#00FF00', borderColor: '#0000FF', borderWidth: 2 }]} />
+            <View style={[styles.legendPill]}> 
+              <View style={[styles.legendCircle, { backgroundColor: SEAT_YOUR, borderColor: '#18181b', borderWidth: 2 }]} />
               <Text style={styles.legendText}>Your Seat</Text>
             </View>
           </View>
@@ -168,23 +172,33 @@ export default function InteractiveSeatMap() {
                   </Defs>
                   <G clipPath="url(#clip0_3319_3)">
                     {/* Background library layout */}
-                    <Rect width="3649" height="4892" fill="white"/>
-                    <Path d="M2394 4877H3635V3841H3131.45L2394 4600.95V4877Z" fill="#D9D9D9" stroke="black" strokeWidth="10"/>
-                    <Path d="M1354.5 4891.5V4609L564 3839H25V4891.5H1354.5Z" fill="#D9D9D9" stroke="black" strokeWidth="10"/>
-                    <Path d="M548 3836.49V2781.89L802.452 2518.78V1959H2862.97V2518.78L3125 2799.21V3849.48L2389.8 4606.32V4890H1344.92V4606.32L548 3836.49Z" fill="#D9D9D9" stroke="black" strokeWidth="10"/>
-                    <Path d="M533.5 2797L799 2524.5V2302.5H8.5V2797H533.5Z" fill="#D9D9D9" stroke="black" strokeWidth="10"/>
-                    <Path d="M3649 2297V1957H2861V2297H3649Z" fill="#8D8D8F" stroke="black" strokeWidth="10"/>
-                    <Path d="M795 2297V1957H7V2297H795Z" fill="#8D8D8F" stroke="black" strokeWidth="10"/>
-                    <Path d="M3645 1949V568.504H3162.43V16.3051L477.207 0V542.416H0V1949H3645Z" fill="#D9D9D9" stroke="black" strokeWidth="10"/>
-                    <Path d="M2856.89 2304.44L3642.45 2307.54L3640.55 2787.1L3125.74 2785.07L2856.03 2522.29L2856.89 2304.44Z" fill="#D9D9D9" stroke="black" strokeWidth="10"/>
-                    <Path d="M1188 3558.31L1561.39 3960H2112.28L2490 3558.31V3022.36L2112.28 2625H1561.39L1188 3022.36V3558.31Z" fill="#D9D9D9" stroke="black" strokeWidth="10"/>
+                    <Rect width="3649" height="4892" fill="#fff" stroke="#222" strokeWidth="6"/>
+                    <Path d="M2394 4877H3635V3841H3131.45L2394 4600.95V4877Z" fill="#fff" stroke="#222" strokeWidth="10"/>
+                    <Path d="M1354.5 4891.5V4609L564 3839H25V4891.5H1354.5Z" fill="#fff" stroke="#222" strokeWidth="10"/>
+                    <Path d="M548 3836.49V2781.89L802.452 2518.78V1959H2862.97V2518.78L3125 2799.21V3849.48L2389.8 4606.32V4890H1344.92V4606.32L548 3836.49Z" fill="#fff" stroke="#222" strokeWidth="10"/>
+                    <Path d="M533.5 2797L799 2524.5V2302.5H8.5V2797H533.5Z" fill="#fff" stroke="#222" strokeWidth="10"/>
+                    <Path d="M3649 2297V1957H2861V2297H3649Z" fill="#fff" stroke="#222" strokeWidth="10"/>
+                    <Path d="M795 2297V1957H7V2297H795Z" fill="#fff" stroke="#222" strokeWidth="10"/>
+                    <Path d="M3645 1949V568.504H3162.43V16.3051L477.207 0V542.416H0V1949H3645Z" fill="#fff" stroke="#222" strokeWidth="10"/>
+                    <Path d="M2856.89 2304.44L3642.45 2307.54L3640.55 2787.1L3125.74 2785.07L2856.03 2522.29L2856.89 2304.44Z" fill="#fff" stroke="#222" strokeWidth="10"/>
+                    <Path d="M1188 3558.31L1561.39 3960H2112.28L2490 3558.31V3022.36L2112.28 2625H1561.39L1188 3022.36V3558.31Z" fill="#fff" stroke="#222" strokeWidth="10"/>
                     {/* Interactive seats */}
                     {seats.map((seat) => {
                       const isUserSeat = seat.userId === user?.uid;
                       const isPressed = pressedSeatId === seat.id;
-                      let fillColor = '#6ee7b7'; // available
-                      if (seat.occupied && !isUserSeat) fillColor = '#fb7185'; // occupied
-                      if (isUserSeat) fillColor = '#6ee7b7'; // your seat, same as available but with blue border
+                      let fillColor = SEAT_AVAILABLE;
+                      let strokeColor = '#18181b';
+                      let strokeWidth = 1.5;
+                      if (seat.occupied && !isUserSeat) {
+                        fillColor = SEAT_BOOKED;
+                        strokeColor = '#18181b';
+                        strokeWidth = 1.5;
+                      }
+                      if (isUserSeat) {
+                        fillColor = SEAT_YOUR;
+                        strokeColor = '#18181b';
+                        strokeWidth = 2.5;
+                      }
                       return (
                         <Circle
                           key={seat.id}
@@ -192,10 +206,9 @@ export default function InteractiveSeatMap() {
                           cy={seat.cy}
                           r={isPressed ? seat.r * 1.15 : seat.r}
                           fill={fillColor}
-                          stroke={isUserSeat ? '#2563eb' : '#e5e7eb'}
-                          strokeWidth={isUserSeat ? 7 : 2}
-                          opacity={seat.occupied && !isUserSeat ? 0.85 : 1}
-                          filter={isUserSeat ? 'drop-shadow(0px 0px 12px #2563eb88)' : undefined}
+                          stroke={strokeColor}
+                          strokeWidth={strokeWidth}
+                          opacity={1}
                           onPress={() => handleSeatPress(seat.id)}
                           onPressIn={() => handlePressIn(seat.id)}
                           onPressOut={handlePressOut}
@@ -228,29 +241,30 @@ export default function InteractiveSeatMap() {
               </Text>
               <View style={{ flexDirection: 'row', marginTop: 24 }}>
                 <Pressable
-                  style={[styles.modalButton, { backgroundColor: selectedSeat?.occupied && selectedSeat?.userId !== user?.uid ? '#aaa' : '#2563eb' }]}
+                  style={[styles.modalButton, { backgroundColor: SVG_BG_COLOR, borderColor: BORDER_COLOR, borderWidth: 1 }]}
                   onPress={handleSeatBook}
                   disabled={selectedSeat?.occupied && selectedSeat?.userId !== user?.uid}
                 >
-                  <Text style={styles.modalButtonText}>
+                  <Text style={[styles.modalButtonText, { color: TEXT_COLOR }]}> 
                     {selectedSeat?.occupied && selectedSeat?.userId === user?.uid ? 'Unbook' : 'Book'}
                   </Text>
                 </Pressable>
-                <Pressable style={[styles.modalButton, { backgroundColor: '#e5e7eb', marginLeft: 14 }]} onPress={() => setModalVisible(false)}>
-                  <Text style={[styles.modalButtonText, { color: '#222' }]}>Close</Text>
+                <Pressable style={[styles.modalButton, { backgroundColor: SVG_BG_COLOR, borderColor: BORDER_COLOR, borderWidth: 1, marginLeft: 14 }]} onPress={() => setModalVisible(false)}>
+                  <Text style={[styles.modalButtonText, { color: TEXT_COLOR }]}>Close</Text>
                 </Pressable>
               </View>
             </View>
           </View>
         </Modal>
       </View>
-    </LinearGradient>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   gradientBg: {
     flex: 1,
+    backgroundColor: BG_COLOR,
   },
   outerContainer: {
     flex: 1,
@@ -258,6 +272,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     minHeight: window.height,
     paddingTop: 10,
+    backgroundColor: BG_COLOR,
   },
   legendContainer: {
     flexDirection: 'row',
@@ -275,37 +290,29 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     paddingVertical: 6,
     marginRight: 0,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.07,
-    shadowRadius: 2,
-    elevation: 2,
+    borderWidth: 1.5,
+    borderColor: BORDER_COLOR,
+    backgroundColor: CARD_COLOR,
   },
   legendCircle: {
     width: 18,
     height: 18,
     borderRadius: 9,
-    borderWidth: 2,
+    borderWidth: 1.5,
     marginRight: 8,
   },
   legendText: {
     fontSize: 16,
-    color: '#222',
+    color: TEXT_COLOR,
     fontWeight: '600',
     letterSpacing: 0.2,
   },
   card: {
-    backgroundColor: '#fff',
+    backgroundColor: CARD_COLOR,
     borderRadius: 24,
     padding: 18,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.18,
-    shadowRadius: 16,
-    elevation: 8,
-    marginBottom: 32,
     borderWidth: 1.5,
-    borderColor: '#e0e7ef',
+    borderColor: BORDER_COLOR,
     position: 'relative',
     maxHeight: 900,
     maxWidth: 1400,
@@ -313,90 +320,88 @@ const styles = StyleSheet.create({
     minWidth: 200,
     alignItems: 'center',
     justifyContent: 'center',
+    shadowColor: 'transparent',
+    elevation: 0,
   },
   svgContainer: {
     borderRadius: 18,
     overflow: 'hidden',
-    borderWidth: 2,
-    borderColor: '#e0e7ef',
-    backgroundColor: '#f9fafb',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.10,
-    shadowRadius: 8,
-    elevation: 4,
+    borderWidth: 1.5,
+    borderColor: BORDER_COLOR,
+    backgroundColor: SVG_BG_COLOR,
+    shadowColor: 'transparent',
+    elevation: 0,
   },
   svg: {
     borderRadius: 18,
-    backgroundColor: '#f9fafb',
+    backgroundColor: SVG_BG_COLOR,
   },
   scrollTopButton: {
     position: 'absolute',
     bottom: 24,
     right: 24,
-    backgroundColor: '#2563eb',
+    backgroundColor: CARD_COLOR,
     borderRadius: 28,
     width: 56,
     height: 56,
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.18,
-    shadowRadius: 6,
-    elevation: 8,
+    borderWidth: 1.5,
+    borderColor: BORDER_COLOR,
+    shadowColor: 'transparent',
+    elevation: 0,
   },
   scrollTopButtonText: {
-    color: '#fff',
+    color: TEXT_COLOR,
     fontSize: 32,
     fontWeight: 'bold',
     marginTop: -2,
   },
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(30,40,60,0.18)',
+    backgroundColor: 'rgba(248,245,238,0.7)',
     alignItems: 'center',
     justifyContent: 'center',
-    backdropFilter: 'blur(6px)',
   },
   modalContent: {
-    backgroundColor: '#fff',
+    backgroundColor: CARD_COLOR,
     borderRadius: 18,
     padding: 32,
     alignItems: 'center',
     minWidth: 280,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.18,
-    shadowRadius: 12,
-    elevation: 12,
+    borderWidth: 1.5,
+    borderColor: BORDER_COLOR,
+    shadowColor: 'transparent',
+    elevation: 0,
   },
   modalTitle: {
     fontSize: 26,
     fontWeight: 'bold',
     marginBottom: 10,
-    color: '#2563eb',
+    color: TEXT_COLOR,
     letterSpacing: 0.5,
   },
   modalSeatId: {
     fontSize: 18,
     fontWeight: '600',
     marginBottom: 6,
-    color: '#222',
+    color: TEXT_COLOR,
   },
   modalStatus: {
     fontSize: 16,
-    color: '#444',
+    color: TEXT_COLOR,
     marginBottom: 2,
   },
   modalButton: {
     paddingVertical: 12,
     paddingHorizontal: 22,
     borderRadius: 10,
-    backgroundColor: '#2563eb',
+    backgroundColor: SVG_BG_COLOR,
+    borderWidth: 1.5,
+    borderColor: BORDER_COLOR,
   },
   modalButtonText: {
-    color: '#fff',
+    color: TEXT_COLOR,
     fontWeight: 'bold',
     fontSize: 17,
     letterSpacing: 0.2,
