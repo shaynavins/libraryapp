@@ -1,11 +1,7 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as Linking from 'expo-linking';
-import { useRouter } from "expo-router";
-import { isSignInWithEmailLink, sendSignInLinkToEmail, signInWithEmailLink } from "firebase/auth";
-import React, { useEffect, useState } from 'react';
+import { useRouter } from 'expo-router';
+import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
+import React, { useState } from 'react';
 import { KeyboardAvoidingView, Platform, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
-import Footer from '../../components/Footer';
-import { auth } from '../../firebaseConfig';
 
 const BG_COLOR = '#f8f5ee';
 const CARD_COLOR = '#fff';
@@ -14,71 +10,22 @@ const TEXT_COLOR = '#18181b';
 const BUTTON_COLOR = '#18181b';
 const SUBTEXT_COLOR = '#6b7280';
 
-const actionCodeSettings = {
-  url: Linking.createURL('finishSignIn'), // e.g., yourapp://finishSignIn
-  handleCodeInApp: true,
-};
-
-export async function sendMagicLink(email: string) {
-  await sendSignInLinkToEmail(auth, email, actionCodeSettings);
-  await AsyncStorage.setItem('emailForSignIn', email);
-  alert('Check your email for the magic link!');
-}
-
-export function useMagicLinkHandler() {
-  const router = useRouter();
-  useEffect(() => {
-    const handleUrl = async (event: { url: string }) => {
-      const url = event.url;
-      if (isSignInWithEmailLink(auth, url)) {
-        const email = await AsyncStorage.getItem('emailForSignIn');
-        if (email) {
-          await signInWithEmailLink(auth, email, url);
-          alert('Signed in successfully!');
-          router.replace('./seats');
-        } else {
-          alert('No email found for sign-in.');
-        }
-      }
-    };
-
-    const subscription = Linking.addEventListener('url', handleUrl);
-
-    (async () => {
-      const initialUrl = await Linking.getInitialURL();
-      if (initialUrl && isSignInWithEmailLink(auth, initialUrl)) {
-        const email = await AsyncStorage.getItem('emailForSignIn');
-        if (email) {
-          await signInWithEmailLink(auth, email, initialUrl);
-          alert('Signed in successfully!');
-          router.replace('./seats');
-        }
-      }
-    })();
-
-    return () => subscription.remove();
-  }, []);
-}
-
-export default function signup() {
+export default function SignupScreen() {
   const [email, setEmail] = useState('');
-  const [error, setError] = useState('');
+  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const router = useRouter();
+  const auth = getAuth();
 
-  useMagicLinkHandler();
-
-  const handleMagicLink = async () => {
+  const handleSignUp = async () => {
     setLoading(true);
-    if (!email.endsWith('@hyderabad.bits-pilani.ac.in')) {
-      setError('You must use your @hyderabad.bits-pilani.ac.in email to sign up.');
-      setLoading(false);
-      return;
-    }
+    setError('');
     try {
-      await sendMagicLink(email);
-      setError('');
+      await createUserWithEmailAndPassword(auth, email, password);
+      router.replace('/seats');
     } catch (err: any) {
-      setError(err.message);
+      setError(err.message || 'Failed to sign up');
     } finally {
       setLoading(false);
     }
@@ -92,8 +39,8 @@ export default function signup() {
           behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         >
           <View style={styles.card}>
-            <Text style={styles.heading}>Create Account</Text>
-            <Text style={styles.subheading}>Sign up to get started</Text>
+            <Text style={styles.heading}>Sign Up</Text>
+            <Text style={styles.subheading}>Create a new account with email and password</Text>
             <TextInput
               placeholder="Email"
               value={email}
@@ -103,16 +50,23 @@ export default function signup() {
               keyboardType="email-address"
               placeholderTextColor={SUBTEXT_COLOR}
             />
+            <TextInput
+              placeholder="Password"
+              value={password}
+              onChangeText={setPassword}
+              style={styles.input}
+              secureTextEntry
+              placeholderTextColor={SUBTEXT_COLOR}
+            />
             {error ? <Text style={styles.error}>{error}</Text> : null}
-            <Pressable style={styles.button} onPress={handleMagicLink} disabled={loading}>
-              <Text style={styles.buttonText}>{loading ? 'Sending link...' : 'Send Magic Link'}</Text>
+            <Pressable style={styles.button} onPress={handleSignUp} disabled={loading}>
+              <Text style={styles.buttonText}>{loading ? 'Signing up...' : 'Sign Up'}</Text>
             </Pressable>
-            <Pressable style={styles.linkBtn} onPress={() => {/* Optionally navigate to login */} }>
+            <Pressable style={styles.linkBtn} onPress={() => router.replace('/')}> 
               <Text style={styles.linkText}>Already have an account? <Text style={{ color: BUTTON_COLOR, fontWeight: 'bold' }}>Login</Text></Text>
             </Pressable>
           </View>
         </KeyboardAvoidingView>
-        <Footer showFullCredits={false} />
       </View>
     </View>
   );
@@ -121,7 +75,7 @@ export default function signup() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'space-between',
+    justifyContent: 'center',
   },
   keyboardView: {
     flex: 1,
@@ -150,6 +104,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: SUBTEXT_COLOR,
     marginBottom: 24,
+    textAlign: 'center',
   },
   input: {
     width: '100%',
@@ -161,6 +116,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     backgroundColor: CARD_COLOR,
     color: TEXT_COLOR,
+    textAlign: 'center',
   },
   button: {
     backgroundColor: BUTTON_COLOR,
