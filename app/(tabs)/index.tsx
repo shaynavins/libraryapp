@@ -11,7 +11,7 @@ const TEXT_COLOR = '#18181b';
 const BUTTON_COLOR = '#18181b';
 const SUBTEXT_COLOR = '#6b7280';
 
-const BACKEND_URL = 'http://localhost:3001'; // Change to your backend URL if needed
+const BACKEND_URL = '/.netlify/functions'; // Use Netlify Functions endpoints
 
 export default function EmailOTPAuth() {
   const [step, setStep] = useState<'email' | 'otp'>('email');
