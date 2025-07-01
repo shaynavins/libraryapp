@@ -20,6 +20,12 @@ if (!admin.apps.length) {
 
 exports.handler = async function(event, context) {
   const { email } = JSON.parse(event.body);
+  if (!email.endsWith('@hyderabad.bits-pilani.ac.in')) {
+    return {
+      statusCode: 400,
+      body: JSON.stringify({ success: false, error: 'Only @hyderabad.bits-pilani.ac.in emails are allowed.' }),
+    };
+  }
   const otp = Math.floor(100000 + Math.random() * 900000).toString();
   const expires = Date.now() + 5 * 60 * 1000; // 5 minutes
 

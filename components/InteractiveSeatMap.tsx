@@ -55,7 +55,7 @@ export default function InteractiveSeatMap() {
     const userSeat = seats.find((s) => s.userId === user.uid);
 
     if (userSeat && userSeat.id !== seatId) {
-      Alert.alert('You can only book one seat at a time.');
+      Alert.alert('You already have a seat booked. Please unbook your current seat before booking another.');
       return;
     }
     if (current?.userId && current.userId !== user.uid) {
@@ -244,7 +244,7 @@ export default function InteractiveSeatMap() {
                 <Pressable
                   style={[styles.modalButton, { backgroundColor: SVG_BG_COLOR, borderColor: BORDER_COLOR, borderWidth: 1 }]}
                   onPress={handleSeatBook}
-                  disabled={selectedSeat?.occupied && selectedSeat?.userId !== user?.uid}
+                  disabled={selectedSeat?.occupied}
                 >
                   <Text style={[styles.modalButtonText, { color: TEXT_COLOR }]}> 
                     {selectedSeat?.occupied && selectedSeat?.userId === user?.uid ? 'Unbook' : 'Book'}
