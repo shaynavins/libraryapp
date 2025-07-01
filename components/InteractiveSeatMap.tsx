@@ -38,6 +38,7 @@ export default function InteractiveSeatMap() {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      console.log('Firebase user:', currentUser);
       setUser(currentUser);
     });
     return unsubscribe;
