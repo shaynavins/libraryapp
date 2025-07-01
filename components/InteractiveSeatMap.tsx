@@ -244,7 +244,7 @@ export default function InteractiveSeatMap() {
                 <Pressable
                   style={[styles.modalButton, { backgroundColor: SVG_BG_COLOR, borderColor: BORDER_COLOR, borderWidth: 1 }]}
                   onPress={handleSeatBook}
-                  disabled={selectedSeat?.occupied}
+                  disabled={selectedSeat?.occupied && selectedSeat?.userId !== user?.uid}
                 >
                   <Text style={[styles.modalButtonText, { color: TEXT_COLOR }]}> 
                     {selectedSeat?.occupied && selectedSeat?.userId === user?.uid ? 'Unbook' : 'Book'}
